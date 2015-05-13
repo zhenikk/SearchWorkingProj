@@ -1,5 +1,7 @@
 package com.example.eugen.searchworkingproj;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +71,7 @@ public class PlaceJSONParser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("PlaceJsonParcer","description "+ description+" _id"+id+" reference"+reference);
         return place;
     }
 }
