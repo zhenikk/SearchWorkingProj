@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // Creating a DownloadTask to download Google Places matching "s"
+
                 placesDownloadTask = new DownloadTask(PLACES);
 
                 // Getting url to the Google Places Autocomplete api
@@ -72,6 +73,7 @@ public class MainActivity extends FragmentActivity {
                 // Start downloading Google Places
                 // This causes to execute doInBackground() of DownloadTask class
                 placesDownloadTask.execute(url);
+
             }
 
             @Override
@@ -83,11 +85,12 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
+
             }
         });
 
         // Setting an item click listener for the AutoCompleteTextView dropdown list
-        atvPlaces.setOnItemClickListener(new OnItemClickListener() {
+       atvPlaces.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int index,
                                     long id) {
@@ -106,6 +109,8 @@ public class MainActivity extends FragmentActivity {
                 // Start downloading Google Place Details
                 // This causes to execute doInBackground() of DownloadTask class
                 placeDetailsDownloadTask.execute(url);
+                Log.d("Tag","DismissDropdown");
+                atvPlaces.dismissDropDown();
 
             }
         });
@@ -142,7 +147,7 @@ public class MainActivity extends FragmentActivity {
 
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/place/autocomplete/"+output+"?"+parameters;
-        Log.d("Tag",url);
+
         return url;
     }
 
@@ -166,7 +171,7 @@ public class MainActivity extends FragmentActivity {
 
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/place/details/"+output+"?"+parameters;
-
+        Log.d("PlaceDetails",url);
         return url;
     }
 
@@ -305,10 +310,16 @@ public class MainActivity extends FragmentActivity {
                     int[] to = new int[] { android.R.id.text1 };
 
                     // Creating a SimpleAdapter for the AutoCompleteTextView
-                    SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), result, android.R.layout.simple_list_item_1, from, to);
-
-                    // Setting the adapter
+                  //  SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), result, android.R.layout.simple_list_item_1, from, to);
+                    SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, result,
+                            android.R.layout.simple_list_item_1, from, to);
                     atvPlaces.setAdapter(adapter);
+                    atvPlaces.performValidation();
+                    atvPlaces.showDropDown();
+
+                  //  Log.d("Tag","Show dropdown");
+                    // Setting the adapter
+                  //  atvPlaces.setAdapter(adapter);
                     break;
                 case PLACES_DETAILS :
                     HashMap<String, String> hm = result.get(0);
@@ -319,12 +330,13 @@ public class MainActivity extends FragmentActivity {
                     // Getting longitude from the parsed data
                     double longitude = Double.parseDouble(hm.get("lng"));
 
+                    String description = hm.get("description");
                     // Getting reference to the SupportMapFragment of the activity_main.xml
                     SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
                     // Getting GoogleMap from SupportMapFragment
                     googleMap = fm.getMap();
-
+                    googleMap.clear();
 
                     LatLng point = new LatLng(latitude, longitude);
 
@@ -337,9 +349,9 @@ public class MainActivity extends FragmentActivity {
 
                     MarkerOptions options = new MarkerOptions();
                     options.position(point);
-                    options.title("Position");
-                    options.snippet("Latitude:"+latitude+",Longitude:"+longitude);
-
+                    options.title("Description");
+                    options.snippet(description);
+                    Log.d("Main onPostEx","Description "+description);
                     // Adding the marker in the Google Map
                     googleMap.addMarker(options);
 

@@ -14,6 +14,7 @@ public class PlaceDetailsJSONParser {
 
         Double lat = Double.valueOf(0);
         Double lng = Double.valueOf(0);
+        String description = "";
 
         HashMap<String, String> hm = new HashMap<String, String>();
         List<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
@@ -21,6 +22,7 @@ public class PlaceDetailsJSONParser {
         try {
             lat = (Double)jObject.getJSONObject("result").getJSONObject("geometry").getJSONObject("location").get("lat");
             lng = (Double)jObject.getJSONObject("result").getJSONObject("geometry").getJSONObject("location").get("lng");
+            description = (String)jObject.getJSONObject("result").get("formatted_address");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -31,7 +33,7 @@ public class PlaceDetailsJSONParser {
 
         hm.put("lat", Double.toString(lat));
         hm.put("lng", Double.toString(lng));
-
+        hm.put("description",description);
         list.add(hm);
 
         return list;
