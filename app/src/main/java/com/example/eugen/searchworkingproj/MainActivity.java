@@ -52,7 +52,7 @@ public class MainActivity extends FragmentActivity implements
     SupportMapFragment fm;
     final int PLACES = 0;
     final int PLACES_DETAILS = 1;
-    final String BROWSER_API_KEY = "AIzaSyAQwy51-ZNxf5ZW85Pm3KnTcheP_OWhBbg";
+    final String BROWSER_API_KEY = "AIzaSyA5IPPXvhy2zKqkZtBOn1vK7AO58E-DEYc";
 
 
     @Override
@@ -219,7 +219,7 @@ public class MainActivity extends FragmentActivity implements
         // Adding the marker in the Google Map
         googleMap.addMarker(options).showInfoWindow();
         CameraUpdate cameraPosition = CameraUpdateFactory.newLatLng(point);
-        CameraUpdate cameraZoom = CameraUpdateFactory.zoomBy(5);
+        CameraUpdate cameraZoom = CameraUpdateFactory.zoomTo(16);
         googleMap.moveCamera(cameraPosition);
         googleMap.animateCamera(cameraZoom);
 
@@ -379,7 +379,7 @@ public class MainActivity extends FragmentActivity implements
                     LatLng point = new LatLng(latitude, longitude);
 
                     CameraUpdate cameraPosition = CameraUpdateFactory.newLatLng(point);
-                    CameraUpdate cameraZoom = CameraUpdateFactory.zoomBy(5);
+                    CameraUpdate cameraZoom = CameraUpdateFactory.zoomTo(16);
 
                     // Showing the user input location in the Google Map
                     googleMap.moveCamera(cameraPosition);

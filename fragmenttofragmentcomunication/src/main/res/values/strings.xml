@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FragmentToFragmentComunication</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="type_smth">Type smth</string>
+    <string name="send_to_1">Send to fragm 1</string>
+    <string name="send_to_2">Send to fragm 2</string>
+</resources>
