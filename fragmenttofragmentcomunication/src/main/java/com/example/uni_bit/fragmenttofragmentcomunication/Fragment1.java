@@ -10,52 +10,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * Created by Uni-Bit on 14.05.2015.
- */
-public class Fragment1 extends Fragment {
-    private static final String LOG_TAG = "Tag" ;
-    private OnFragmentInteractionListener mListener;
+ */public class Fragment1 extends Fragment {
+    OnFragmentSendText mSendText;
+    String send_text;
+    EditText text;
 
-    @Override
-    public void onAttach(Activity activity) {
+
+    public Fragment1(){
+    }
+
+    public void onAttach(Activity activity){
+        Log.d("Fragment1","OnAttach()");
         super.onAttach(activity);
-
-        try {
-            mListener = (OnFragmentInteractionListener)activity;
-        }
-        catch (ClassCastException e)
-        {
-            throw new ClassCastException(activity.toString()+" must implement interface OnFragmentInteractionListener");
+        try{
+            mSendText = (OnFragmentSendText)activity;
+        } catch(ClassCastException e){
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentSendText");
         }
     }
-    public void updateDetail() {
 
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        View v = inflater.inflate(R.layout.frag1_layout, container, false);
+        Log.d("Fragment1","OnCreateView()");
+        text = (EditText)v.findViewById(R.id.input);
+        Button b = (Button)v.findViewById(R.id.send);
 
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.frag1_layout,null);
-        Button btn = (Button)v.findViewById(R.id.update_button);
-        btn.setOnClickListener(new View.OnClickListener() {
+        b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment2 fragment2 = new Fragment2();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.main_container,fragment2);
-                ft.addToBackStack(null);
-                ft.commit();
-                Log.d(LOG_TAG, "Button click in Fragment1");
+                send_text = text.getText().toString();
+                Log.d("Fragment1","onClicked()");
+                mSendText.onSentText(send_text);
             }
         });
         return v;
-    }
-
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(String link);
     }
 }

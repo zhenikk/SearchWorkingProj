@@ -2,29 +2,57 @@ package com.example.uni_bit.fragmenttofragmentcomunication;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 
 
-public class MainActivity extends Activity implements Fragment1.OnFragmentInteractionListener{
+public class MainActivity extends Activity implements OnFragmentSendText {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Fragment1 fragment1= new Fragment1();
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.main_container,fragment1);
-        ft.commit();
-
-
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if (savedInstanceState == null) {
+                getFragmentManager().beginTransaction()
+                        .add(R.id.container, new Fragment1())
+                        .commit();
+            }
+        }
+        else {
+            if (savedInstanceState == null) {
+                getFragmentManager().beginTransaction()
+                        .add(R.id.container, new Fragment1())
+                        .commit();
+                getFragmentManager().beginTransaction()
+                        .add(R.id.container2, new Fragment2(), "fragment2")
+                        .commit();
+            }
         }
 
+    }
 
     @Override
-    public void onFragmentInteraction(String link) {
-
+    public void onSentText(String text) {
+        Log.d("Main","onSentText overriden "+text);
+        Fragment2 fragment_2 = (Fragment2) getFragmentManager().findFragmentByTag("fragment2");
+        if (fragment_2 != null) {
+            fragment_2.setText(text);
+        } else {
+            Fragment2 fragment = new Fragment2();
+            Bundle args = new Bundle();
+            args.putString("text", text);
+            fragment.setArguments(args);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null).commit();
+            fragment.sentText();
+        }
 
     }
+
 }
+
