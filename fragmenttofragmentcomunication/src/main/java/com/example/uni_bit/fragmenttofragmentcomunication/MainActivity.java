@@ -40,8 +40,10 @@ public class MainActivity extends Activity implements OnFragmentSendText {
         Log.d("Main","onSentText overriden "+text);
         Fragment2 fragment_2 = (Fragment2) getFragmentManager().findFragmentByTag("fragment2");
         if (fragment_2 != null) {
+            Log.d("MainActivity", "Fragment2-NotNull SetTextView");
             fragment_2.setText(text);
         } else {
+            Log.d("MainActivity", "Fragment2 - Null Create new");
             Fragment2 fragment = new Fragment2();
             Bundle args = new Bundle();
             args.putString("text", text);

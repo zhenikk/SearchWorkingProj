@@ -18,6 +18,7 @@ public class Fragment2 extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
+        super.onAttach(activity);
        try {
            onLatLngSent = (OnLatLngSent)activity;
        }
